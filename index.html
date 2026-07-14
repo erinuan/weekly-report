@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TT 广告搭建 — 普通图1</title>
+<style>
+:root { color-scheme: light; --bg: #F7F8FA; --card: #FFFFFF; --border: #E4E7EC; --text: #1D2939; --text-secondary: #667085; --brand: #1A1A2E; --accent: #FF5C35; --accent-hover: #E04A26; --green: #16A34A; --label-width: 150px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+.header { background: var(--brand); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; color: #fff; position: sticky; top: 0; z-index: 100; }
+.header-left { display: flex; align-items: center; gap: 12px; }
+.header-logo { width: 36px; height: 36px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+.header-title { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
+.header-sub { font-size: 13px; color: rgba(255,255,255,0.6); }
+.container { max-width: 900px; margin: 0 auto; padding: 28px 20px 60px; }
+.template-selector { display: flex; gap: 16px; align-items: center; margin-bottom: 28px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+.template-selector label { font-weight: 600; font-size: 14px; white-space: nowrap; }
+.template-selector select { flex: 1; max-width: 260px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; background: #fff; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23667085'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+.template-badge { display: flex; align-items: center; gap: 6px; background: #F0F9FF; border: 1px solid #B9E6FE; border-radius: 20px; padding: 6px 14px; font-size: 12px; color: #026AA2; font-weight: 500; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+.card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.card-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.card-icon.campaign { background: #F0F9FF; color: #026AA2; }
+.card-icon.adgroup { background: #F4F3FF; color: #5925DC; }
+.card-icon.ad { background: #FFF0EC; color: #FF5C35; }
+.card-icon.fixed { background: #F2F4F7; color: #667085; }
+.card-title { font-size: 15px; font-weight: 600; }
+.card-desc { font-size: 12px; color: var(--text-secondary); }
+.form-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+.form-row:last-child { margin-bottom: 0; }
+.form-label { width: var(--label-width); min-width: var(--label-width); padding-top: 9px; font-size: 13px; font-weight: 500; color: var(--text-secondary); text-align: right; }
+.form-label .required { color: var(--accent); margin-left: 2px; }
+.form-control { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.form-control input, .form-control select, .form-control textarea { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; color: var(--text); background: #fff; transition: border-color 0.15s, box-shadow 0.15s; outline: none; }
+.form-control input:focus, .form-control select:focus, .form-control textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255,92,53,0.1); }
+.form-control textarea { min-height: 72px; resize: vertical; }
+.form-control .hint { font-size: 11px; color: var(--text-secondary); }
+.form-control .hint code { background: #F2F4F7; padding: 1px 5px; border-radius: 3px; font-size: 11px; }
+.col-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.col-2 .form-label { width: 110px; min-width: 110px; }
+.fixed-rules { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
+.fixed-rule { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); padding: 8px 12px; background: #F9FAFB; border-radius: 6px; }
+.fixed-rule .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+.fixed-rule code { color: var(--text); font-weight: 500; font-size: 11px; background: #F2F4F7; padding: 1px 5px; border-radius: 3px; }
+.toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle .slider { position: absolute; inset: 0; background: #D0D5DD; border-radius: 12px; cursor: pointer; transition: background 0.2s; }
+.toggle .slider::before { content: ''; position: absolute; width: 20px; height: 20px; left: 2px; bottom: 2px; background: #fff; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+.toggle input:checked + .slider { background: var(--green); }
+.toggle input:checked + .slider::before { transform: translateX(20px); }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-secondary { background: #fff; color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: #F9FAFB; }
+.submit-area { display: flex; align-items: center; gap: 16px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
+.submit-area .toggle-row { margin-right: auto; }
+.submit-area .toggle-row label { font-size: 13px; color: var(--text-secondary); cursor: pointer; }
+.toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #fff; padding: 14px 28px; border-radius: 10px; font-size: 14px; font-weight: 500; box-shadow: 0 8px 32px rgba(0,0,0,0.2); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.toast.show { opacity: 1; }
+.toast.error { background: #DC2626; }
+.btn.loading { pointer-events: none; opacity: 0.8; }
+.spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; display: none; }
+.btn.loading .spinner { display: inline-block; }
+.btn.loading .btn-text { display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 720px) { .header { padding: 16px 20px; } .container { padding: 20px 12px; } .card { padding: 16px; } .form-row { flex-direction: column; gap: 2px; } .form-label { width: 100%; min-width: 100%; text-align: left; padding-top: 0; } .col-2 { grid-template-columns: 1fr; } .fixed-rules { grid-template-columns: 1fr; } .template-selector { flex-direction: column; align-items: stretch; } .template-selector select { max-width: 100%; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left"><div class="header-logo">TT</div><div><div class="header-title">TikTok 广告搭建</div><div class="header-sub">tt-mcp · 普通图1 模版</div></div></div>
+  <div><button class="btn btn-secondary" onclick="resetForm()" style="font-size:13px;padding:8px 16px;">清空表单</button></div>
+</div>
+<div class="container">
+<form id="buildForm" onsubmit="submitForm(event)">
+
+<div class="template-selector">
+  <label for="templateName">📐 搭建模版</label>
+  <select id="templateName" onchange="onTemplateChange()"><option value="普通图1" selected>普通图1 — 非Smart+轮播图片广告</option></select>
+  <div class="template-badge" id="templateInfo">🖼️ CAROUSEL_ADS · TT_USER · WEB_CONVERSIONS</div>
+</div>
+
+<div class="card">
+  <div class="card-header"><div class="card-icon campaign">📢</div><div><div class="card-title">系列 Campaign</div><div class="card-desc">一个系列下挂多个广告组</div></div></div>
+  <div class="form-row"><div class="form-label"><span class="required">*</span> 账户 ID</div><div class="form-control"><input type="text" id="advertiserId" placeholder="如 7614079178404626440" required></div></div>
+  <div class="form-row"><div class="form-label"><span class="required">*</span> 系列名称</div><div class="form-control"><input type="text" id="campaignName" placeholder="如 test-series-01" required></div></div>
+  <div class="col-2">
+    <div class="form-row"><div class="form-label"><span class="required">*</span> 预算模式</div><div class="form-control"><select id="budgetMode" required><option value="BUDGET_MODE_INFINITE" selected>无限预算</option><option value="BUDGET_MODE_DAILY">日预算</option><option value="BUDGET_MODE_TOTAL">总预算</option></select></div></div>
+    <div class="form-row"><div class="form-label"><span class="required">*</span> 预算金额</div><div class="form-control"><input type="number" id="budget" value="0" min="0" step="1" required><div class="hint">无限预算填 0</div></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header"><div class="card-icon adgroup">🎯</div><div><div class="card-title">广告组 Adgroup</div><div class="card-desc">每组配置相同，出价 + 定向 + 预算</div></div></div>
+  <div class="form-row"><div class="form-label"><span class="required">*</span> 组名前缀</div><div class="form-control"><input type="text" id="adgroupNamePrefix" placeholder="如 test-adgroup" required><div class="hint">后缀自动加 <code>-1</code> <code>-2</code> <code>-3</code> …</div></div></div>
+  <div class="col-2">
+    <div class="form-row"><div class="form-label"><span class="required">*</span> 结构比例</div><div class="form-control"><input type="text" id="structure" placeholder="1-3-4" value="1-3-4" pattern="\d+-\d+-\d+" required><div class="hint">格式：系-组-广<br>例 1-3-4 = 3组×4素材</div></div></div>
+    <div class="form-row"><div class="form-label"><span class="required">*</span> 组日预算 ($)</div><div class="form-control"><input type="number" id="adgroupBudget" value="20" min="1" step="1" required></div></div>
+  </div>
+  <div class="col-2">
+    <div class="form-row"><div class="form-label"><span class="required">*</span> 转化出价 ($)</div><div class="form-control"><input type="number" id="conversionBidPrice" value="0.3" min="0.01" step="0.01" required></div></div>
+    <div class="form-row"><div class="form-label"><span class="required">*</span> 投放地域</div><div class="form-control"><select id="locationIds" required><option value="">-- 请选择国家 --</option></select><div class="hint">如列表无需要的国家，选「其他」后手动输入 geo_id</div><input type="text" id="locationIdsCustom" placeholder="手动输入 geo_id（逗号分隔多个）" style="display:none;margin-top:4px;"></div></div>
+  </div>
+  <div class="col-2">
+    <div class="form-row"><div class="form-label"><span class="required">*</span> Pixel ID</div><div class="form-control"><input type="text" id="pixelId" placeholder="如 7621748117982609426" required></div></div>
+    <div class="form-row"><div class="form-label"><span class="required">*</span> 发布者名称</div><div class="form-control"><input type="text" id="identityName" placeholder="如 goldhiiiiii" required><div class="hint">填写发布者的显示名称（display_name），类型固定为 <code>TT_USER</code></div></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header"><div class="card-icon ad">🖼️</div><div><div class="card-title">广告 Ad</div><div class="card-desc">每个广告 = 1 张图片 + 文案 + 落地页</div></div></div>
+  <div class="form-row"><div class="form-label"><span class="required">*</span> 广告文案</div><div class="form-control"><textarea id="adText" placeholder="如 Mutuelle Retraite Agirc Arrco 2026" required></textarea></div></div>
+  <div class="form-row"><div class="form-label"><span class="required">*</span> 落地页链接</div><div class="form-control"><textarea id="landingPageUrl" placeholder="如 https://xxx?ttclid=__CLICKID__&site_id=__CSITE__&..." required></textarea><div class="hint">可包含宏：<code>__CLICKID__</code> <code>__CSITE__</code> <code>__AID__</code> <code>__CID__</code> 等</div></div></div>
+  <div class="form-row"><div class="form-label"><span class="required">*</span> 素材 ID 列表</div><div class="form-control"><textarea id="imageIds" placeholder="每行一个 image_id：&#10;ad-site-i18n-sg/202607135d0db3ba265a8b344d0aa1b9&#10;ad-site-i18n-sg/202607135d0dabb9044a288243bfaaff" rows="5" required></textarea><div class="hint">每行一个素材 ID · 当前已输入 <strong id="inputCount">0</strong> 个，需要 <strong id="requiredCount">12</strong> 个</div></div></div>
+</div>
+
+<div class="card">
+  <div class="card-header"><div class="card-icon fixed">⚙️</div><div><div class="card-title">模版固定规则（无需填写）</div><div class="card-desc">以下字段按模版自动填入</div></div></div>
+  <div class="fixed-rules">
+    <div class="fixed-rule"><span class="dot"></span> objective_type = <code>WEB_CONVERSIONS</code></div>
+    <div class="fixed-rule"><span class="dot"></span> campaign_type = <code>REGULAR_CAMPAIGN</code></div>
+    <div class="fixed-rule"><span class="dot"></span> optimization_goal = <code>CONVERT</code></div>
+    <div class="fixed-rule"><span class="dot"></span> billing_event = <code>OCPM</code></div>
+    <div class="fixed-rule"><span class="dot"></span> schedule_start = <code>now</code></div>
+    <div class="fixed-rule"><span class="dot"></span> schedule_end = <code>now + 10年</code></div>
+    <div class="fixed-rule"><span class="dot"></span> age_groups = <code>18~55+</code></div>
+    <div class="fixed-rule"><span class="dot"></span> gender = <code>不限</code></div>
+    <div class="fixed-rule"><span class="dot"></span> placements = <code>TikTok</code></div>
+    <div class="fixed-rule"><span class="dot"></span> pacing = <code>平滑投放</code></div>
+    <div class="fixed-rule"><span class="dot"></span> ad_format = <code>CAROUSEL_ADS</code></div>
+    <div class="fixed-rule"><span class="dot"></span> identity_type = <code>TT_USER</code></div>
+    <div class="fixed-rule"><span class="dot"></span> click_attr = <code>7天</code></div>
+    <div class="fixed-rule"><span class="dot"></span> view_attr = <code>1天</code></div>
+    <div class="fixed-rule"><span class="dot"></span> skip_learning = <code>True</code></div>
+    <div class="fixed-rule"><span class="dot"></span> dark_post = <code>ON</code></div>
+  </div>
+</div>
+
+<div class="submit-area">
+  <div class="toggle-row">
+    <label class="toggle"><input type="checkbox" id="pauseAfterBuild" checked><span class="slider"></span></label>
+    <label for="pauseAfterBuild">搭建后暂停系列</label>
+  </div>
+  <button type="button" class="btn btn-secondary" onclick="exportConfig()">📋 导出配置</button>
+  <button type="submit" class="btn btn-primary" id="submitBtn"><span class="spinner"></span><span class="btn-text">🚀 开始搭建</span></button>
+</div>
+</form>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+// Country IDs (geo_id => 中文名)
+const COUNTRY_IDS = {"法国":"3017382","德国":"3546783","西班牙":"2510769","美国":"6252001","英国":"2635167","加拿大":"1814990","澳大利亚":"2782113","意大利":"3150349","荷兰":"3752981","巴西":"3469034","墨西哥":"3996063","印度":"1781728","印尼":"1638432","马来西亚":"1733045","泰国":"1605651","越南":"3686110","新加坡":"1856006","香港":"1861060","台湾":"102358","韩国":"1643084","菲律宾":"3397943","新西兰":"357994","阿联酋":"798544","沙特":"798549","土耳其":"3144096","阿根廷":"953987","波兰":"357994","其他":"__CUSTOM__"};
+
+const locationSelect = document.getElementById("locationIds");
+const locationCustom = document.getElementById("locationIdsCustom");
+
+Object.entries(COUNTRY_IDS).forEach(([name, id]) => {
+  const opt = document.createElement("option");
+  opt.value = id; opt.textContent = name; locationSelect.appendChild(opt);
+});
+
+locationSelect.addEventListener("change", function() {
+  if (this.value === "__CUSTOM__") { locationCustom.style.display = "block"; locationCustom.focus(); }
+  else { locationCustom.style.display = "none"; }
+});
+
+function getLocationIds() {
+  const selVal = locationSelect.value;
+  if (selVal === "__CUSTOM__") return locationCustom.value.trim().split(",").map(s => s.trim()).filter(Boolean);
+  return selVal ? [selVal] : [];
+}
+
+const imgText = document.getElementById("imageIds");
+const structEl = document.getElementById("structure");
+imgText.addEventListener("input", updateCount);
+structEl.addEventListener("input", updateCount);
+function updateCount() {
+  const lines = imgText.value.trim().split("\n").filter(l => l.trim());
+  document.getElementById("inputCount").textContent = lines.length;
+  const parts = structEl.value.split("-");
+  const req = parts.length === 3 ? parseInt(parts[1]) * parseInt(parts[2]) : "?";
+  document.getElementById("requiredCount").textContent = isNaN(req) ? "?" : req;
+}
+updateCount();
+
+function showToast(msg, isErr) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg; toast.className = "toast show" + (isErr ? " error" : "");
+  setTimeout(() => toast.classList.remove("show"), 3500);
+}
+
+function collectConfig() {
+  const imageLines = imgText.value.trim().split("\n").filter(l => l.trim());
+  return {
+    template: document.getElementById("templateName").value,
+    advertiserId: document.getElementById("advertiserId").value.trim(),
+    campaignName: document.getElementById("campaignName").value.trim(),
+    budgetMode: document.getElementById("budgetMode").value,
+    budget: parseFloat(document.getElementById("budget").value) || 0,
+    adgroupNamePrefix: document.getElementById("adgroupNamePrefix").value.trim(),
+    structure: structEl.value.trim(),
+    adgroupBudget: parseFloat(document.getElementById("adgroupBudget").value) || 20,
+    conversionBidPrice: parseFloat(document.getElementById("conversionBidPrice").value) || 0.3,
+    locationIds: getLocationIds(),
+    pixelId: document.getElementById("pixelId").value.trim(),
+    identityName: document.getElementById("identityName").value.trim(),
+    adText: document.getElementById("adText").value.trim(),
+    landingPageUrl: document.getElementById("landingPageUrl").value.trim(),
+    imageIds: imageLines,
+    pauseAfterBuild: document.getElementById("pauseAfterBuild").checked
+  };
+}
+
+function buildPrompt(config, groupCount, adsPerGroup, totalNeeded) {
+  let selected = [...config.imageIds];
+  let unused = [];
+  if (selected.length > totalNeeded) {
+    for (let i = selected.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [selected[i], selected[j]] = [selected[j], selected[i]]; }
+    unused = selected.slice(totalNeeded);
+    selected = selected.slice(0, totalNeeded);
+  }
+  let lines = [`用普通图1模版在账户 \`${config.advertiserId}\` 搭建广告：`, ""];
+  lines.push(`- 系列名：${config.campaignName}`, `- 组名前缀：${config.adgroupNamePrefix}`, `- 结构比例：${config.structure}`,
+    `- 系列预算：${config.budgetMode === 'BUDGET_MODE_INFINITE' ? '无限' : '$'+config.budget+'/天'}`,
+    `- 组日预算：$${config.adgroupBudget}`, `- 转化出价：$${config.conversionBidPrice}`,
+    `- 投放地域：${config.locationIds.join(', ')}`, `- Pixel ID：${config.pixelId}`,
+    `- 发布者名称：${config.identityName}`, `- 文案：${config.adText}`, `- 落地页：${config.landingPageUrl}`);
+  lines.push("\n**素材 ID 列表：**");
+  selected.forEach((id, i) => lines.push(`${i+1}. \`${id}\``));
+  if (unused.length) { lines.push("\n**未使用的素材：**"); unused.forEach(id => lines.push(`- \`${id}\``)); }
+  if (config.pauseAfterBuild) lines.push("\n搭建完成后暂停系列。");
+  return lines.join("\n");
+}
+
+function submitForm(event) {
+  event.preventDefault();
+  if (!document.getElementById("buildForm").checkValidity()) { document.getElementById("buildForm").reportValidity(); return; }
+  const config = collectConfig();
+  const parts = config.structure.split("-");
+  if (parts.length !== 3) { showToast("结构比例格式错误，请用 系-组-广", true); return; }
+  const gc = parseInt(parts[1]), apg = parseInt(parts[2]);
+  if (!gc || !apg || gc <= 0 || apg <= 0) { showToast("结构比例数字无效", true); return; }
+  const total = gc * apg;
+  if (!config.imageIds.length) { showToast("请至少输入 1 个素材 ID", true); return; }
+  if (config.imageIds.length < total) {
+    const remain = config.imageIds.length - apg * (gc - 1);
+    if (!confirm(`素材数量 (${config.imageIds.length}) 少于所需 (${total})。\n前 ${gc-1} 组各 ${apg} 个，最后一组 ${remain} 个。\n确认继续？`)) return;
+  }
+  const prompt = buildPrompt(config, gc, apg, total);
+  navigator.clipboard.writeText(prompt).then(() => showToast("✅ 搭建指令已复制到剪贴板！请粘贴给 Claude 执行")).catch(() => {
+    const ov = document.createElement("div"); ov.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;display:flex;align-items:center;justify-content:center";
+    const box = document.createElement("div"); box.style.cssText = "background:#fff;border-radius:12px;padding:24px;max-width:700px;width:90%;max-height:80vh;overflow:auto";
+    box.innerHTML = `<h3 style="margin-bottom:12px">📋 搭建指令</h3><textarea readonly style="width:100%;height:300px;font-family:monospace;font-size:12px;border:1px solid #ddd;border-radius:8px;padding:12px;resize:vertical">${prompt.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</textarea><div style="margin-top:12px;text-align:right"><button onclick="navigator.clipboard.writeText(this.parentElement.previousElementSibling.value);this.textContent='✅ 已复制'" style="background:#FF5C35;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:14px">📋 复制</button></div>`;
+    ov.appendChild(box); document.body.appendChild(ov);
+    ov.addEventListener("click", e => { if (e.target === ov) ov.remove(); });
+  });
+}
+
+function exportConfig() {
+  if (!document.getElementById("buildForm").checkValidity()) { document.getElementById("buildForm").reportValidity(); return; }
+  const config = collectConfig();
+  const blob = new Blob([JSON.stringify(config, null, 2)], { type: "application/json" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `tt-build-${config.campaignName||"config"}.json`;
+  a.click(); URL.revokeObjectURL(a.href);
+  showToast("配置已导出");
+}
+
+function resetForm() { if (confirm("确定清空？")) { document.getElementById("buildForm").reset(); updateCount(); showToast("已清空"); } }
+</script>
+</body>
+</html>
